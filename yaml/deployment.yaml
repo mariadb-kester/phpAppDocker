@@ -1,0 +1,42 @@
+apiVersion:                    apps/v1
+kind:                          Deployment
+metadata:
+  name:                        website-qtc
+spec:
+  replicas:                    2
+  selector:
+    matchLabels:
+      run:                     website-qtc
+  template:
+    metadata:
+      labels:
+        app_name:              website-qtc
+        run:                   website-qtc
+    spec:
+      containers:
+      - image:                 registry.digitalocean.com/qtc-systems/website-qtc:dev-1.0.38
+        livenessProbe:
+          failureThreshold:    3
+          httpGet:
+            path:              /healthz.html
+            port:              80
+            scheme:            HTTP
+          initialDelaySeconds: 3
+          periodSeconds:       3
+          successThreshold:    1
+          timeoutSeconds:      5
+        readinessProbe:
+          failureThreshold:    3
+          httpGet:
+            path:              /healthz.html
+            port:              80
+            scheme:            HTTP
+          initialDelaySeconds: 3
+          periodSeconds:       3
+          successThreshold:    1
+          timeoutSeconds:      5
+        name:                  website-qtc
+        ports:
+        - containerPort:       80
+      imagePullSecrets:
+      - name:                  qtc-systems

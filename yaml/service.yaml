@@ -1,0 +1,12 @@
+apiVersion:       v1
+kind:             Service
+metadata:
+  name:           website-qtc
+spec:
+  selector:
+    app_name:     website-qtc
+  ports:
+    - protocol:   TCP
+      port:       80
+      targetPort: 80
+  type:           ClusterIP

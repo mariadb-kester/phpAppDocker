@@ -1,0 +1,24 @@
+apiVersion:                         extensions/v1beta1
+kind:                               Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    helm.fluxcd.io/antecedent:      default:helmrelease/website-qtc
+    kubernetes.io/tls-acme:         "true"
+    nginx.ingress.kubernetes.io:    ""
+  name:                             website-qtc
+  namespace:                        default
+spec:
+  rules:
+  - host:                           website.qtcsystems.com
+    http:
+      paths:
+      - backend:
+          serviceName:              website-qtc
+          servicePort:              80
+        path:                       /
+        pathType:                   ImplementationSpecific
+  tls:
+  - hosts:
+    - website.qtcsystems.com
+    secretName:                     website-qtc
