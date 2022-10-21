@@ -31,7 +31,7 @@ jobs:
       - run:
           name:            PHPMD
           no_output_timeout: 20m
-          command:         phpmd --ignore-violations-on-exit /root/project/var/www/html/code/ text cleancode, codesize, controversial, design, naming, unusedcode
+          command:         phpmd --ignore-violations-on-exit /root/project/var/www/html/ text cleancode, codesize, controversial, design, naming, unusedcode
   publish:
     docker:
       - image: eu.gcr.io/swade1987/kubernetes-toolkit:1.17.2
