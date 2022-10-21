@@ -3,8 +3,7 @@
 #------------------------------------------------------------------
 
 VERSION=${CIRCLE_SHA1}
-IMAGE=website-qtc:dev-${VERSION}
-DO_REPO=registry.digitalocean.com/qtc-systems
+IMAGE=website:dev-${VERSION}
 BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
 # Load Secrets from CircleCI and pass in to build script as a variable to be set within the container
 
@@ -18,11 +17,6 @@ build:
 							 --build-arg VERSION="${VERSION}" \
 							 --build-arg HTTPS_SETTING="on" \
 							 --build-arg IMAGE_VERSION="${IMAGE}" \
-                             --build-arg DBUSER="${DBUSER}" \
-                             --build-arg DBPASS="${DBPASS}" \
-                             --build-arg DBHOST="${DBHOST}" \
-                             --build-arg DATABASE="${DATABASE}" \
-                             --build-arg GOOGLE_API_KEY="${GOOGLE_API_KEY}" \
 							 -t ${IMAGE} .
 
 push-to-digitalocean:

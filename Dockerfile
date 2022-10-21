@@ -6,17 +6,12 @@ ARG VCS_REF
 ARG VERSION
 ARG HTTPS_SETTING
 ARG IMAGE_VERSION
-ARG DBUSER
-ARG DBPASS
-ARG DBHOST
-ARG DATABASE
-ARG GOOGLE_API_KEY
 LABEL org.label-schema.build-date=$BUILD_DATE \
-      org.label-schema.name="kestersmariadb.com" \
+      org.label-schema.name="kester.pro" \
       org.label-schema.description="Docker Container for Kesters MariaDB K8s Demo" \
-      org.label-schema.url="https://github.com/kesterriley/MariaDB_K8s_Demo/" \
+      org.label-schema.url="https://github.com/mariadb-kester/phpAppDocker" \
       org.label-schema.vcs-ref=$VCS_REF \
-      org.label-schema.vcs-url="https://github.com/kesterriley/MariaDB_K8s_Demo//" \
+      org.label-schema.vcs-url="https://github.com/mariadb-kester/phpAppDocker" \
       org.label-schema.vendor="Kester Riley" \
       org.label-schema.version=$VERSION \
       org.label-schema.schema-version="1.0" \
@@ -65,11 +60,6 @@ RUN apk add --update gzip apache2 php7-apache2 php7-mbstring php7-session php7-j
     && sed -ri -e 's!zend.enable_gc = On!zend.enable_gc = Off!g' $PHP_INI_DIR/php.ini \
     && echo 'SetEnv HTTPS' ${HTTPS_SETTING} > /etc/apache2/conf.d/environment.conf \
     && echo 'SetEnv IMAGE_VERSION' ${IMAGE_VERSION} >> /etc/apache2/conf.d/environment.conf \
-    && echo 'SetEnv DBUSER' ${DBUSER} >> /etc/apache2/conf.d/environment.conf \
-    && echo 'SetEnv DBPASS' ${DBPASS} >> /etc/apache2/conf.d/environment.conf \
-    && echo 'SetEnv DBHOST' ${DBHOST} >> /etc/apache2/conf.d/environment.conf \
-    && echo 'SetEnv DATABASE' ${DATABASE} >> /etc/apache2/conf.d/environment.conf \
-    && echo 'SetEnv GOOGLE_API_KEY' ${GOOGLE_API_KEY} >> /etc/apache2/conf.d/environment.conf \
     && rm  -rf /tmp/* /var/cache/apk/* \
     && chown -R apache:apache /etc/apache2 \
     && chmod -R 700 /etc/apache2
