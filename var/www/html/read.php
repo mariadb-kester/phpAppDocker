@@ -1,18 +1,18 @@
 <?php
-// Check existence of id parameter before processing further
-if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
+// Check existence of emp_no parameter before processing further
+if(isset($_GET["emp_no"]) && !empty(trim($_GET["emp_no"]))){
     // Include config file
     require_once "../configs/config.php";
 
     // Prepare a select statement
-    $sql = "SELECT * FROM employees WHERE id = :id";
+    $sql = "SELECT * FROM employees WHERE emp_no = :emp_no";
 
     if($stmt = $pdo->prepare($sql)){
         // Bind variables to the prepared statement as parameters
-        $stmt->bindParam(":id", $param_id);
+        $stmt->bindParam(":emp_no", $param_emp_no);
 
         // Set parameters
-        $param_id = trim($_GET["id"]);
+        $param_emp_no = trim($_GET["emp_no"]);
 
         // Attempt to execute the prepared statement
         if($stmt->execute()){
@@ -22,11 +22,11 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 // Retrieve individual field value
-                $name = $row["name"];
-                $address = $row["address"];
-                $salary = $row["salary"];
+                $first_name = $row["first_name"];
+                $last_name = $row["last_name"];
+                $gender = $row["gender"];
             } else{
-                // URL doesn't contain valid id parameter. Redirect to error page
+                // URL doesn't contain valid emp_no parameter. Redirect to error page
                 header("location: error.php");
                 exit();
             }
@@ -42,7 +42,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     // Close connection
     unset($pdo);
 } else{
-    // URL doesn't contain id parameter. Redirect to error page
+    // URL doesn't contain emp_no parameter. Redirect to error page
     header("location: error.php");
     exit();
 }
@@ -68,16 +68,16 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
             <div class="col-md-12">
                 <h1 class="mt-5 mb-3">View Record</h1>
                 <div class="form-group">
-                    <label>Name</label>
-                    <p><b><?php echo $row["name"]; ?></b></p>
+                    <label>First Name</label>
+                    <p><b><?php echo $row["first_name"]; ?></b></p>
                 </div>
                 <div class="form-group">
-                    <label>Address</label>
-                    <p><b><?php echo $row["address"]; ?></b></p>
+                    <label>Last Name</label>
+                    <p><b><?php echo $row["last_name"]; ?></b></p>
                 </div>
                 <div class="form-group">
-                    <label>Salary</label>
-                    <p><b><?php echo $row["salary"]; ?></b></p>
+                    <label>Gender</label>
+                    <p><b><?php echo $row["gender"]; ?></b></p>
                 </div>
                 <p><a href="index.php" class="btn btn-primary">Back</a></p>
             </div>

@@ -3,54 +3,54 @@
 require_once "../configs/config.php";
 
 // Define variables and initialize with empty values
-$name = $address = $salary = "";
-$name_err = $address_err = $salary_err = "";
+$first_name = $last_name = $gender = "";
+$first_name_err = $last_name_err = $gender_err = "";
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    // Validate name
-    $input_name = trim($_POST["name"]);
-    if(empty($input_name)){
-        $name_err = "Please enter a name.";
-    } elseif(!filter_var($input_name, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z\s]+$/")))){
-        $name_err = "Please enter a valid name.";
+    // Validate first_name
+    $input_first_name = trim($_POST["first_name"]);
+    if(empty($input_first_name)){
+        $first_name_err = "Please enter a first name.";
+    } elseif(!filter_var($input_first_name, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z\s]+$/")))){
+        $first_name_err = "Please enter a valid first name.";
     } else{
-        $name = $input_name;
+        $first_name = $input_first_name;
     }
 
-    // Validate address
-    $input_address = trim($_POST["address"]);
-    if(empty($input_address)){
-        $address_err = "Please enter an address.";
+    // Validate last_name
+    $input_last_name = trim($_POST["last_name"]);
+    if(empty($input_last_name)){
+        $last_name_err = "Please enter a last name.";
     } else{
-        $address = $input_address;
+        $last_name = $input_last_name;
     }
 
-    // Validate salary
-    $input_salary = trim($_POST["salary"]);
-    if(empty($input_salary)){
-        $salary_err = "Please enter the salary amount.";
-    } elseif(!ctype_digit($input_salary)){
-        $salary_err = "Please enter a positive integer value.";
+    // Validate gender
+    $input_gender = trim($_POST["gender"]);
+    if(empty($input_gender)){
+        $gender_err = "Please enter a gender. (M/F)";
+    } elseif ($input_gender == "M" || $input_gender == "F" ) {
+        $gender = $input_gender;
     } else{
-        $salary = $input_salary;
+        $gender_err = "Gender can only be M or F.";
     }
 
     // Check input errors before inserting in database
-    if(empty($name_err) && empty($address_err) && empty($salary_err)){
+    if(empty($first_name_err) && empty($last_name_err) && empty($gender_err)){
         // Prepare an insert statement
-        $sql = "INSERT INTO employees (name, address, salary) VALUES (:name, :address, :salary)";
+        $sql = "INSERT INTO employees (first_name, last_name, gender) VALUES (:first_name, :last_name, :gender)";
 
         if($stmt = $pdo->prepare($sql)){
             // Bind variables to the prepared statement as parameters
-            $stmt->bindParam(":name", $param_name);
-            $stmt->bindParam(":address", $param_address);
-            $stmt->bindParam(":salary", $param_salary);
+            $stmt->bindParam(":first_name", $param_first_name);
+            $stmt->bindParam(":last_name", $param_last_name);
+            $stmt->bindParam(":gender", $param_gender);
 
             // Set parameters
-            $param_name = $name;
-            $param_address = $address;
-            $param_salary = $salary;
+            $param_first_name = $first_name;
+            $param_last_name = $last_name;
+            $param_gender = $gender;
 
             // Attempt to execute the prepared statement
             if($stmt->execute()){
@@ -90,22 +90,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <div class="row">
             <div class="col-md-12">
                 <h2 class="mt-5">Create Record</h2>
-                <p>Please fill this form and submit to add employee record to the database.</p>
+                <p>Please fill out this form and submit to add employee record to the database.</p>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                     <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" name="name" class="form-control <?php echo (!empty($name_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $name; ?>">
-                        <span class="invalid-feedback"><?php echo $name_err;?></span>
+                        <label>First Name</label>
+                        <input type="text" name="first_name" class="form-control <?php echo (!empty($first_name_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $first_name; ?>">
+                        <span class="invalid-feedback"><?php echo $first_name_err;?></span>
                     </div>
                     <div class="form-group">
-                        <label>Address</label>
-                        <textarea name="address" class="form-control <?php echo (!empty($address_err)) ? 'is-invalid' : ''; ?>"><?php echo $address; ?></textarea>
-                        <span class="invalid-feedback"><?php echo $address_err;?></span>
+                        <label>Last Name</label>
+                        <input type="text" name="last_name" class="form-control <?php echo (!empty($last_name_err)) ? 'is-invalid' : ''; ?>"><?php echo $last_name; ?></input>
+                        <span class="invalid-feedback"><?php echo $last_name_err;?></span>
                     </div>
                     <div class="form-group">
-                        <label>Salary</label>
-                        <input type="text" name="salary" class="form-control <?php echo (!empty($salary_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $salary; ?>">
-                        <span class="invalid-feedback"><?php echo $salary_err;?></span>
+                        <label>Gender</label>
+                        <input type="text" name="gender" class="form-control <?php echo (!empty($gender_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $gender; ?>">
+                        <span class="invalid-feedback"><?php echo $gender_err;?></span>
                     </div>
                     <input type="submit" class="btn btn-primary" value="Submit">
                     <a href="index.php" class="btn btn-secondary ml-2">Cancel</a>
